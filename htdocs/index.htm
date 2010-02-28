@@ -29,10 +29,6 @@
 	
 	SoundManager.ready = function() {
 		
-		alert("X");
-		//document.getElementById("SoundProxy").add(name);
-		//var sm = new SoundManager();
-		sm.add("media/samples/tick.mp3");
 		sm.add("media/samples/1.mp3");
 		sm.add("media/samples/2.mp3");
 		sm.add("media/samples/3.mp3");
@@ -41,14 +37,6 @@
 		sm.add("media/samples/6.mp3");
 		sm.add("media/samples/7.mp3");
 		sm.add("media/samples/8.mp3");
-		/*sm.add("1");
-		sm.add("2");
-		sm.add("3");
-		sm.add("4");
-		sm.add("5");
-		sm.add("6");
-		sm.add("7");
-		sm.add("8");*/
 		
 	
 	}
@@ -97,7 +85,7 @@
 			case "tick":
 				//sm.play("tick");
 			case "keydown":
-				sm.play("media/samples/" + (obj.y + 1) + ".mp3");
+				sm.play(obj.y, obj.x  * 0.5);
 				break;
 			default:
 				break;
