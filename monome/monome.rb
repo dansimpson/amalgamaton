@@ -32,7 +32,7 @@ EventMachine.run do
     def keyup(x, y)
       message = %({"action":"keyup","x":#{x},"y":#{y}})
       puts message
-      @mq.topic("amalgamaton").publish("keyup,#{x},#{y})")
+      @mq.topic("amalgamaton").publish(message)
     end
 
     def conduct!
@@ -63,7 +63,6 @@ EventMachine.run do
       orchestra.conduct!
     end
   end
-
 
   # EM.add_periodic_timer(60.0 / BEATS_PER_MINUTE) do
   #   orchestra.tick!
