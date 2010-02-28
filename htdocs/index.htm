@@ -29,15 +29,19 @@
 	
 	SoundManager.ready = function() {
 		
-		sm.add("media/samples/1.mp3");
-		sm.add("media/samples/2.mp3");
+		sm.add("media/samples/club-dance-beat-005.mp3");
+		sm.add("media/samples/acoustic-noodling-02.mp3");
+		sm.add("media/samples/exotic-sarod-01.mp3");
+		sm.add("media/samples/edgy-rock-bass-06.mp3");
+		sm.add("media/samples/orchestra-strings-08.mp3");
+		sm.add("media/samples/upright-funk-bass-05.mp3");
+		/*sm.add("media/samples/2.mp3");
 		sm.add("media/samples/3.mp3");
 		sm.add("media/samples/4.mp3");
 		sm.add("media/samples/5.mp3");
 		sm.add("media/samples/6.mp3");
 		sm.add("media/samples/7.mp3");
-		sm.add("media/samples/8.mp3");
-		
+		sm.add("media/samples/8.mp3");*/
 	
 	}
 	
@@ -58,14 +62,16 @@
 			document.getElementById("SoundProxy").add(name);
 		},
 		
-		play: function(name) {
+		play: function(id, offset) {
 			/*if(this.sounds[name]) {
 				this.sounds[name].pause();
 				this.sounds[name].currentTime = 0;
 				this.sounds[name].play();
 			}*/
 			//console.log(document.getElementById("SoundProxy"));
-			document.getElementById("SoundProxy").play(name);
+			//alert("playing");
+			
+			document.getElementById("SoundProxy").play(id, offset);
 		}
 	};
 	
@@ -84,8 +90,9 @@
 		switch(obj.action) {
 			case "tick":
 				//sm.play("tick");
+				break;
 			case "keydown":
-				sm.play(obj.y, obj.x  * 0.5);
+				sm.play(obj.y, obj.x  * 500);
 				break;
 			default:
 				break;
@@ -112,7 +119,6 @@
 		},
 		{},
 		function() {
-			alert("loaded");
 		}
 	);
 
