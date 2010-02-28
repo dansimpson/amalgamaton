@@ -10,9 +10,47 @@
 <div id="status">connecting....</div>
 
 <audio id="tick" src="media/samples/tick.ogg" autobuffer="true"></audio>
+<audio id="tick2" src="media/samples/tick.ogg" autobuffer="true"></audio>
 
 <script>
 
+	var SoundChannel = function() {
+	}
+	SoundChannel.prototype = {
+		active: false,
+		
+		play: function(sound) {
+		}
+	}
+
+	var SoundManager = function(channels) {
+		
+	}
+	var num = 0;
+	
+	SoundManager.prototype = {
+	
+		test: 1,
+		sounds: {},
+	
+		add: function(name, opts) {
+			if(!this.sounds[name]) {
+				var sound = document.createElement("audio");
+				sound.setAttribute("src", "media/samples/" + name + ".ogg");
+				sound.setAttribute("autobuffer", true);
+				this.sounds[name] = sound;
+			}
+		},
+		play: function(name) {
+			if(this.sounds[name]) {
+				this.sounds[name].play();
+			}
+		}
+	};
+
+	var sm = new SoundManager();
+	sm.add("tick");
+	
 	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
 
 	webSocket.onopen = function(event){
@@ -23,11 +61,13 @@
 		
 		var obj = JSON.parse(event.data);
 		
-		console.log(obj);
-		
 		switch(obj.action) {
 			case "tick":
-				document.getElementById("tick").play();
+				//if(num++ % 2 == 0) {
+				//	sm.play("tick");
+				//} else {
+				//	sm.play("alt");
+				//}
 				break;
 			default:
 				break;
@@ -38,35 +78,24 @@
 	webSocket.onclose = function(event){
 		document.getElementById('status').innerHTML = 'socket closed';
 	};
+	
+	setInterval(function() {
+		sm.play("tick");
+	}, 500);
 
 </script>
 
 
 
-<audio id="a1" src="media/samples/1.wav" autobuffer="true"></audio>
+<!--<audio id="a1" src="media/samples/1.wav" autobuffer="true"></audio>
 <audio id="a2" src="media/samples/1.wav" autobuffer="true"></audio>
 <audio id="a3" src="media/samples/1.wav" autobuffer="true"></audio>
 <audio id="a4" src="media/samples/1.wav" autobuffer="true"></audio>
 <audio id="a5" src="media/samples/1.wav" autobuffer="true"></audio>
 <audio id="a6" src="media/samples/1.wav" autobuffer="true"></audio>
 <audio id="a7" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a8" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a8" src="media/samples/1.wav" autobuffer="true"></audio>-->
 
-<script>
-
-	var ae = document.getElementById("audio");
-	//document.getElementById("tick").play();
-	//document.getElementById("audio").play();
-	//ae.currentTime=2;
-	//ae.play();
-	setInterval(function() {
-		//ae.currentTime = 1;
-		//ae.play();
-		//document.getElementById("tick").play();
-		//document.getElementById("audio").play();
-	}, 1000);
-	
-</script>
 
 </body>
 </html>
