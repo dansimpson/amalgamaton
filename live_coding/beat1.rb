@@ -1,21 +1,35 @@
 require 'rubygems'
 require 'mq'
-require 'json'
+require 'sequencer'
+
+
 
 AMQP.start(:host => "localhost") do
 
-  @mq = MQ.new
+  @channel = MQ.new.topic("amalgamaton")
 
-  EM.add_periodic_timer(8) do
-	@mq.topic('amalgamaton').publish(%({"action":"play","items":["1"]}))
+  preload @channel, [{
+    :id => "beat",
+    :url => "media/samples/club-dance-beat-005.mp3"
+  },{
+    :id => "exotic",
+    :url => "media/samples/exotic-sarod-01.mp3"
+  },{
+    :id => "bass",
+    :url => "media/samples/upright-funk-bass-05.mp3"
+  }]
 
-	puts "Playing 1"
+
+  delay 4.seconds do
+    every 8.seconds do
+      play @channel, "bass"
+    end
+  end
+
+  delay 8.seconds do
+    every 8.seconds do
+      play @channel, "exotic"
+    end
   end
   
-  EM.add_periodic_timer(4) do
-	@mq.topic('amalgamaton').publish(%({"action":"play","items":["2"]}))
-
-	puts "Playing 1"
-  end
-
 end

@@ -35,9 +35,20 @@ var Amalgamaton = {
         this.play("tick");
         break;
       case "preload":
-        this.add(obj.items);
+        this.addAll(obj.items);
       case "play":
-        this.play(obj.items);
+        if(obj.items.constructor == Array) {
+          this.playAll(obj.items);
+        } else {
+          this.play(obj.items);
+        }
+        break;
+      case "stop":
+        if(obj.items.constructor == Array) {
+          this.stopAll(obj.items);
+        } else {
+          this.stop(obj.items);
+        }
         break;
       default:
         break;
@@ -53,12 +64,6 @@ var Amalgamaton = {
     this.proxy = document.getElementById("proxy");
     this.connect();
     this.add({ id: "tick", url:"media/samples/tick.mp3" });
-    this.add({ id: "1", url:"media/samples/club-dance-beat-005.mp3" });
-    this.add({ id: "2", url:"media/samples/acoustic-noodling-02.mp3" });
-    this.add({ id: "3", url:"media/samples/exotic-sarod-01.mp3" });
-    this.add({ id: "4", url:"media/samples/edgy-rock-bass-06.mp3" });
-    this.add({ id: "5", url:"media/samples/orchestra-strings-08.mp3" });
-    this.add({ id: "6", url:"media/samples/upright-funk-bass-05.mp3" });
   },
   
   embed : function() {
@@ -90,8 +95,30 @@ var Amalgamaton = {
     this.proxy.add(sample.id, sample.url);
   },
   
+  addAll: function(samples) {
+    for(var i = 0;i < samples.length;i++) {
+      this.add(samples[i]);
+    }
+  },
+  
   play: function(id) {
     this.proxy.play(id);
+  },
+  
+  playAll: function(samples) {
+    for(var i = 0;i < samples.length;i++) {
+      this.play(samples[i]);
+    }
+  },
+  
+  stop: function(id) {
+    this.proxy.stop(id);
+  },
+
+  stopAll: function(samples) {
+    for(var i = 0;i < samples.length;i++) {
+      this.stop(samples[i]);
+    }
   }
 
 };
