@@ -9,9 +9,6 @@
 
 <div id="status">connecting....</div>
 
-<audio id="tick" src="media/samples/tick.ogg" autobuffer="true"></audio>
-<audio id="tick2" src="media/samples/tick.ogg" autobuffer="true"></audio>
-
 <script>
 
 	var SoundChannel = function() {
@@ -50,6 +47,14 @@
 
 	var sm = new SoundManager();
 	sm.add("tick");
+	sm.add("1");
+	sm.add("2");
+	sm.add("3");
+	sm.add("4");
+	sm.add("5");
+	sm.add("6");
+	sm.add("7");
+	sm.add("8");
 	
 	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
 
@@ -58,43 +63,23 @@
 	};
 
 	webSocket.onmessage = function(event){
-		
 		var obj = JSON.parse(event.data);
-		
 		switch(obj.action) {
 			case "tick":
-				//if(num++ % 2 == 0) {
-				//	sm.play("tick");
-				//} else {
-				//	sm.play("alt");
-				//}
+				//sm.play("tick");
+			case "keydown":
+				sm.play(obj.y + 1);
 				break;
 			default:
 				break;
 		}
-		//document.getElementById('status').innerHTML += "<br/>" + event.data;
 	};
 
 	webSocket.onclose = function(event){
 		document.getElementById('status').innerHTML = 'socket closed';
 	};
-	
-	setInterval(function() {
-		sm.play("tick");
-	}, 500);
 
 </script>
-
-
-
-<!--<audio id="a1" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a2" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a3" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a4" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a5" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a6" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a7" src="media/samples/1.wav" autobuffer="true"></audio>
-<audio id="a8" src="media/samples/1.wav" autobuffer="true"></audio>-->
 
 
 </body>
