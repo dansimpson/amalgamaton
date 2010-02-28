@@ -3,125 +3,17 @@
 <head>
 	<title>Amalgamatron</title>
 	<script src="javascripts/swfobject.js" type="text/javascript"></script>
+	<script src="javascripts/amalgamaton.js" type="text/javascript"></script>
 </head>
 <body>
 
-
-<div id="SoundProxy">connecting....</div>
-<div id="status">connecting....</div>
+<div id="status">connecting...</div>
+<div id="proxy">loading sound proxy...</div>
 
 <script>
-
-	
-	
-	var SoundChannel = function() {
-	}
-	SoundChannel.prototype = {
-
-		active: false,
-
-		play: function(sound) {
-		}
-	}
-
-	var SoundManager = function(channels) {
-	}
-	
-	SoundManager.ready = function() {
-		
-		sm.add("media/samples/club-dance-beat-005.mp3");
-		sm.add("media/samples/acoustic-noodling-02.mp3");
-		sm.add("media/samples/exotic-sarod-01.mp3");
-		sm.add("media/samples/edgy-rock-bass-06.mp3");
-		sm.add("media/samples/orchestra-strings-08.mp3");
-		sm.add("media/samples/upright-funk-bass-05.mp3");
-		/*sm.add("media/samples/2.mp3");
-		sm.add("media/samples/3.mp3");
-		sm.add("media/samples/4.mp3");
-		sm.add("media/samples/5.mp3");
-		sm.add("media/samples/6.mp3");
-		sm.add("media/samples/7.mp3");
-		sm.add("media/samples/8.mp3");*/
-	
-	}
-	
-	SoundManager.prototype = {
-	
-		channels: [],
-		
-		test	: 1,
-		sounds	: {},
-	
-		add: function(name, opts) {
-			/*if(!this.sounds[name]) {
-				var sound = document.createElement("audio");
-				sound.setAttribute("src", "media/samples/" + name + ".ogg");
-				//sound.setAttribute("autobuffer", true);
-				this.sounds[name] = sound;
-			}*/
-			document.getElementById("SoundProxy").add(name);
-		},
-		
-		play: function(id, offset) {
-			/*if(this.sounds[name]) {
-				this.sounds[name].pause();
-				this.sounds[name].currentTime = 0;
-				this.sounds[name].play();
-			}*/
-			//console.log(document.getElementById("SoundProxy"));
-			//alert("playing");
-			
-			document.getElementById("SoundProxy").play(id, offset);
-		}
-	};
-	
-	var sm = new SoundManager();
-
-	
-	
-	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
-
-	webSocket.onopen = function(event){
-		document.getElementById('status').innerHTML = 'connected';
-	};
-
-	webSocket.onmessage = function(event){
-		var obj = JSON.parse(event.data);
-		switch(obj.action) {
-			case "tick":
-				//sm.play("tick");
-				break;
-			case "keydown":
-				sm.play(obj.y, obj.x  * 500);
-				break;
-			default:
-				break;
-		}
-	};
-
-	webSocket.onclose = function(event){
-		document.getElementById('status').innerHTML = 'socket closed';
-	};
-	
-	
-	swfobject.embedSWF(
-		"flash/amalgamaton.swf?" + Math.random().toString(),
-		"SoundProxy",
-		"10",
-		"10",
-		"9",
-		"flash/playerProductInstall.swf",
-		{},
-		{
-			allowScriptAccess: "always",
-			wmode: "opaque",
-			bgcolor: "#ff0000"
-		},
-		{},
-		function() {
-		}
-	);
-
+	Amalgamaton.init({
+		url: "ws://192.168.0.2:4000/music"
+	});
 </script>
 
 
