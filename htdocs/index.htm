@@ -2,11 +2,12 @@
 <html>
 <head>
 	<title>Amalgamatron</title>
+	<script src="javascripts/swfobject.js" type="text/javascript"></script>
 </head>
 <body>
 
 
-
+<div id="SoundProxy">connecting....</div>
 <div id="status">connecting....</div>
 
 <script>
@@ -14,47 +15,61 @@
 	var SoundChannel = function() {
 	}
 	SoundChannel.prototype = {
+
 		active: false,
-		
+
 		play: function(sound) {
 		}
 	}
 
 	var SoundManager = function(channels) {
-		
 	}
-	var num = 0;
+	
+	SoundManager.ready = function() {
+		
+		document.getElementById("SoundProxy").add(name);
+		var sm = new SoundManager();
+		sm.add("media/samples/tick.ogg");
+		/*sm.add("1");
+		sm.add("2");
+		sm.add("3");
+		sm.add("4");
+		sm.add("5");
+		sm.add("6");
+		sm.add("7");
+		sm.add("8");*/
+		
+	
+	}
 	
 	SoundManager.prototype = {
 	
-		test: 1,
-		sounds: {},
+		channels: [],
+		
+		test	: 1,
+		sounds	: {},
 	
-		add: function(name, opts) {
+		/*add: function(name, opts) {
 			if(!this.sounds[name]) {
 				var sound = document.createElement("audio");
 				sound.setAttribute("src", "media/samples/" + name + ".ogg");
-				sound.setAttribute("autobuffer", true);
+				//sound.setAttribute("autobuffer", true);
 				this.sounds[name] = sound;
 			}
-		},
+		},*/
+		
 		play: function(name) {
-			if(this.sounds[name]) {
+			/*if(this.sounds[name]) {
+				this.sounds[name].pause();
+				this.sounds[name].currentTime = 0;
 				this.sounds[name].play();
-			}
+			}*/
+			console.log(document.getElementById("SoundProxy"));
+			document.getElementById("SoundProxy").play(name);
 		}
 	};
 
 	var sm = new SoundManager();
-	sm.add("tick");
-	sm.add("1");
-	sm.add("2");
-	sm.add("3");
-	sm.add("4");
-	sm.add("5");
-	sm.add("6");
-	sm.add("7");
-	sm.add("8");
 	
 	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
 
@@ -68,7 +83,7 @@
 			case "tick":
 				//sm.play("tick");
 			case "keydown":
-				sm.play(obj.y + 1);
+				sm.play("media/samples/tick.ogg");
 				break;
 			default:
 				break;
@@ -78,6 +93,29 @@
 	webSocket.onclose = function(event){
 		document.getElementById('status').innerHTML = 'socket closed';
 	};
+	
+	setInterval(function() {
+		sm.play("media/samples/tick.mp3");
+	}, 1000);
+	
+	swfobject.embedSWF(
+		"flash/amalgamaton.swf?" + Math.random().toString(),
+		"SoundProxy",
+		"10",
+		"10",
+		"9",
+		"flash/playerProductInstall.swf",
+		{},
+		{
+			allowScriptAccess: "always",
+			wmode: "opaque",
+			bgcolor: "#ff0000"
+		},
+		{},
+		function() {
+			alert("loaded");
+		}
+	);
 
 </script>
 
