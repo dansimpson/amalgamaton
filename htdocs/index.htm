@@ -12,6 +12,8 @@
 
 <script>
 
+	
+	
 	var SoundChannel = function() {
 	}
 	SoundChannel.prototype = {
@@ -27,9 +29,18 @@
 	
 	SoundManager.ready = function() {
 		
-		document.getElementById("SoundProxy").add(name);
-		var sm = new SoundManager();
-		sm.add("media/samples/tick.ogg");
+		alert("X");
+		//document.getElementById("SoundProxy").add(name);
+		//var sm = new SoundManager();
+		sm.add("media/samples/tick.mp3");
+		sm.add("media/samples/1.mp3");
+		sm.add("media/samples/2.mp3");
+		sm.add("media/samples/3.mp3");
+		sm.add("media/samples/4.mp3");
+		sm.add("media/samples/5.mp3");
+		sm.add("media/samples/6.mp3");
+		sm.add("media/samples/7.mp3");
+		sm.add("media/samples/8.mp3");
 		/*sm.add("1");
 		sm.add("2");
 		sm.add("3");
@@ -49,14 +60,15 @@
 		test	: 1,
 		sounds	: {},
 	
-		/*add: function(name, opts) {
-			if(!this.sounds[name]) {
+		add: function(name, opts) {
+			/*if(!this.sounds[name]) {
 				var sound = document.createElement("audio");
 				sound.setAttribute("src", "media/samples/" + name + ".ogg");
 				//sound.setAttribute("autobuffer", true);
 				this.sounds[name] = sound;
-			}
-		},*/
+			}*/
+			document.getElementById("SoundProxy").add(name);
+		},
 		
 		play: function(name) {
 			/*if(this.sounds[name]) {
@@ -64,12 +76,14 @@
 				this.sounds[name].currentTime = 0;
 				this.sounds[name].play();
 			}*/
-			console.log(document.getElementById("SoundProxy"));
+			//console.log(document.getElementById("SoundProxy"));
 			document.getElementById("SoundProxy").play(name);
 		}
 	};
-
+	
 	var sm = new SoundManager();
+
+	
 	
 	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
 
@@ -83,7 +97,7 @@
 			case "tick":
 				//sm.play("tick");
 			case "keydown":
-				sm.play("media/samples/tick.ogg");
+				sm.play("media/samples/" + (obj.y + 1) + ".mp3");
 				break;
 			default:
 				break;
@@ -94,9 +108,6 @@
 		document.getElementById('status').innerHTML = 'socket closed';
 	};
 	
-	setInterval(function() {
-		sm.play("media/samples/tick.mp3");
-	}, 1000);
 	
 	swfobject.embedSWF(
 		"flash/amalgamaton.swf?" + Math.random().toString(),
