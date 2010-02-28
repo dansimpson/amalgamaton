@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+	<title>Amalgamatron</title>
+</head>
+<body>
+
+
+
+<div id="status">connecting....</div>
+
+<script>
+
+	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
+
+	webSocket.onopen = function(event){
+		document.getElementById('status').innerHTML = 'connected';
+	};
+
+	webSocket.onmessage = function(event){
+		document.getElementById('status').innerHTML += "<br/>" + event.data;
+	};
+
+	webSocket.onclose = function(event){
+		document.getElementById('status').innerHTML = 'socket closed';
+	};
+
+</script>
+
+<audio id="audio" src="media/linux.ogg" autobuffer="true">
+Your browser does not support the audio element.
+</audio>
+
+<script>
+
+	var ae = document.getElementById("audio");
+
+	//document.getElementById("audio").play();
+	//ae.currentTime=2;
+	//ae.play();
+	setInterval(function() {
+		//ae.currentTime = 1;
+		//ae.play();
+		//document.getElementById("audio").play();
+	}, 1000);
+	
+</script>
+
+</body>
+</html>
