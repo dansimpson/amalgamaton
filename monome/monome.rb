@@ -65,8 +65,8 @@ EventMachine.run do
   end
 
 
-  EM.add_periodic_timer(60.0 / BEATS_PER_MINUTE) do
-    orchestra.tick!
-  end
+  # EM.add_periodic_timer(60.0 / BEATS_PER_MINUTE) do
+  #   orchestra.tick!
+  # end
   
 end
