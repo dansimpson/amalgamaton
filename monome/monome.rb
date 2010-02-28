@@ -1,8 +1,8 @@
-require 'rubygems'
-require 'monome_serial'
-require 'eventmachine'
-require 'amqp'
-require 'mq'
+require "rubygems"
+require "monome_serial"
+require "eventmachine"
+require "amqp"
+require "mq"
 
 BEATS_PER_MINUTE = 120
 
@@ -10,7 +10,7 @@ mq = nil
 
 EventMachine.run do
   
-  AMQP.start(:host => '192.168.0.2')
+  AMQP.start(:host => "192.168.0.2")
   mq = MQ.new
   mq.topic("amalgamaton").publish("hey there!", :key => "test")
   
@@ -24,13 +24,13 @@ EventMachine.run do
     end
 
     def keydown(x, y)
-      message = "{'action':'keydown','x':#{x},'y':#{y}}"
+      message = %({"action":"keydown","x":#{x},"y":#{y}})
       puts message
       @mq.topic("amalgamaton").publish(message)
     end
 
     def keyup(x, y)
-      message = "{'action':'keyup','x':#{x},'y':#{y}}"
+      message = %({"action":"keyup","x":#{x},"y":#{y}})
       puts message
       @mq.topic("amalgamaton").publish("keyup,#{x},#{y})")
     end
@@ -49,7 +49,7 @@ EventMachine.run do
     
     def tick!
       @tick = ((@tick || 0) + 1) % 8
-      message = "{'action':'tick','offset':#{@tick}}"
+      message = %({"action":"tick","offset":#{@tick}})
       puts message
       @mq.topic("amalgamaton").publish(message)
     end
