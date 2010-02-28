@@ -9,6 +9,8 @@
 
 <div id="status">connecting....</div>
 
+<audio id="tick" src="media/samples/tick.ogg" autobuffer="true"></audio>
+
 <script>
 
 	var webSocket = new WebSocket('ws://192.168.0.2:4000/music');
@@ -18,7 +20,19 @@
 	};
 
 	webSocket.onmessage = function(event){
-		document.getElementById('status').innerHTML += "<br/>" + event.data;
+		
+		var obj = JSON.parse(event.data);
+		
+		console.log(obj);
+		
+		switch(obj.action) {
+			case "tick":
+				document.getElementById("tick").play();
+				break;
+			default:
+				break;
+		}
+		//document.getElementById('status').innerHTML += "<br/>" + event.data;
 	};
 
 	webSocket.onclose = function(event){
@@ -27,20 +41,28 @@
 
 </script>
 
-<audio id="audio" src="media/linux.ogg" autobuffer="true">
-Your browser does not support the audio element.
-</audio>
+
+
+<audio id="a1" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a2" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a3" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a4" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a5" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a6" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a7" src="media/samples/1.wav" autobuffer="true"></audio>
+<audio id="a8" src="media/samples/1.wav" autobuffer="true"></audio>
 
 <script>
 
 	var ae = document.getElementById("audio");
-
+	//document.getElementById("tick").play();
 	//document.getElementById("audio").play();
 	//ae.currentTime=2;
 	//ae.play();
 	setInterval(function() {
 		//ae.currentTime = 1;
 		//ae.play();
+		//document.getElementById("tick").play();
 		//document.getElementById("audio").play();
 	}, 1000);
 	
