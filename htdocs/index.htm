@@ -2,8 +2,10 @@
 <html>
 <head>
 	<title>Amalgamatron</title>
+	<script src="javascripts/jquery.js" type="text/javascript"></script>
 	<script src="javascripts/swfobject.js" type="text/javascript"></script>
 	<script src="javascripts/amalgamaton.js" type="text/javascript"></script>
+	<link href="stylesheets/main.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -11,11 +13,44 @@
 <div id="proxy">loading sound proxy...</div>
 
 <script>
+
+	var grid = new Grid({
+		width	: 8,
+		height	: 8
+	});
+		
 	Amalgamaton.init({
-		url: "ws://192.168.0.2:4000/music"
+		url : "ws://192.168.0.2:4000/music",
+		grid: grid
+	});
+	
+	$(document).ready(function() {
+		/*$("ul.options li input").each(function(idx,el) {
+			$(el).bind("click", function() {
+				if(el.checked) {
+					Amalgamaton.subscribe(el.name)
+				} else {
+					Amalgamaton.unsubscribe(el.name)
+				}
+			});
+		});*/
+		
+
+		
+		grid.render($("#grid"));
+		grid.notify(Amalgamaton.onGridEvent.bind(Amalgamaton));
 	});
 </script>
 
+
+<div id="grid"></div>
+
+<ul class="options">
+	<li><input type="checkbox" name="bass"> Bass</li>
+	<li><input type="checkbox" name="drums"> Drums</li>
+	<li><input type="checkbox" name="guitar"> Guitar</li>
+	<li><input type="checkbox" name="vocals"> Vocals</li>
+</ul>
 
 </body>
 </html>

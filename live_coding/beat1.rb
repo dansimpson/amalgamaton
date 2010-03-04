@@ -20,16 +20,16 @@ AMQP.start(:host => "localhost") do
   }]
 
 
-  delay 4.seconds do
-    every 8.seconds do
-      play @channel, "bass"
-    end
+  every 8.seconds do
+    play @channel, "bass", "bass"
+    play @channel, "beat", "drums"
   end
 
   delay 8.seconds do
-    every 8.seconds do
-      play @channel, "exotic"
-    end
+  every 16.seconds do
+    play @channel, "exotic", "guitar"
   end
-  
-end
+  end
+ 
+
+end 
