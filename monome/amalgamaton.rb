@@ -5,7 +5,7 @@ require 'pp'
 require 'monome'
 require 'sequencer'
 
-BPM = 180
+BPM = 240
 
 samples = []
 
@@ -26,7 +26,7 @@ AMQP.start(:host => "192.168.0.2") do
   end
   
   
-  EM.add_periodic_timer(60.0 / (BPM * 4)) do
+  EM.add_periodic_timer(60.0 / BPM) do
     beat = sequencer.tick!
     play_commands = monome.grid.col(beat).collect.with_index do |play, i|
       i.to_s if play
