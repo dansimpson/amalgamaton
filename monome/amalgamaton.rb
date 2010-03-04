@@ -10,6 +10,9 @@ BPM = 240
 samples = []
 
 AMQP.start(:host => "192.168.0.2") do
+  
+  EM.set_quantum(10)
+  EM.kqueue
 
   mq = MQ.new
   
