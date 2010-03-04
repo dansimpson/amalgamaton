@@ -27,4 +27,8 @@ class Grid
     @rows.to_json
   end
   
+  def col(x)
+    @rows.collect { |row| row[x] }
+  end
+  
 end

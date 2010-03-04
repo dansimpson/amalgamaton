@@ -11,6 +11,7 @@ class Monome
     @activate_blocks = []
     @deactivate_blocks = []
     @clear_blocks = []
+    @refresh_blocks = []
   end
   
   def toggle!(x, y)
@@ -38,6 +39,10 @@ class Monome
     @clear_blocks << block
   end
   
+  def on_refresh(&block)
+    @refresh_blocks << block
+  end
+  
   def activate(x, y)
     puts "Activating #{[x, y]}"
     @monome.illuminate_lamp(x, y)
@@ -53,6 +58,15 @@ class Monome
       block.call(x, y)
     end
   end
+  
+  def refresh
+    puts "Refreshing client(s)"
+    @refresh_blocks.each do |block|
+      block.call
+    end
+  end
+  
+  
   
   def read!
     action, x, y = @monome.read
