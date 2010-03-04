@@ -14,29 +14,16 @@
 
 <script>
 
-	var grid = new Grid({
-		width	: 8,
-		height	: 8
-	});
-		
-	Amalgamaton.init({
-		url : "ws://192.168.0.2:4000/music",
-		grid: grid
-	});
-	
 	$(document).ready(function() {
-		/*$("ul.options li input").each(function(idx,el) {
-			$(el).bind("click", function() {
-				if(el.checked) {
-					Amalgamaton.subscribe(el.name)
-				} else {
-					Amalgamaton.unsubscribe(el.name)
-				}
-			});
-		});*/
-		
-
-		
+		var grid = new Grid({
+			width	: 8,
+			height	: 8
+		});
+	
+		Amalgamaton.init({
+			url : "ws://192.168.0.2:4000/music",
+			grid: grid
+		});
 		grid.render($("#grid"));
 		grid.notify(Amalgamaton.onGridEvent.bind(Amalgamaton));
 	});
@@ -45,12 +32,6 @@
 
 <div id="grid"></div>
 
-<ul class="options">
-	<li><input type="checkbox" name="bass"> Bass</li>
-	<li><input type="checkbox" name="drums"> Drums</li>
-	<li><input type="checkbox" name="guitar"> Guitar</li>
-	<li><input type="checkbox" name="vocals"> Vocals</li>
-</ul>
 
 </body>
 </html>

@@ -3,24 +3,13 @@ require "json"
 
 class MusicGroup < EM::Channel
 
-	@@families = nil
-
 	def initialize
-		super()
-		
+		super
 		@mq = MQ.new
 		@mq.queue(rand().to_s).bind(MusicGroup.topic, :key => "conductor").subscribe("auto-delete".intern => false) do |msg|
 			push msg
 		end
 	end
-	
-	#def self.find family
-	#	@@families = {} if @@families.nil?
-	#	unless @@families.has_key?(family)
-	#		@@families[family] = MusicGroup.new family
-	#	end
-	#	@@families[family]
-	#end
 	
 	def self.topic
 		@@topic ||= MQ.new.topic("amalgamaton")
@@ -32,22 +21,16 @@ class MusicGroup < EM::Channel
 	
 end
 
-
-
 class MusicHandler < Funnel::WebSocket::Connection
 
-	@@status = nil
+	@@channel = nil
 
 	#called when the connection is ready to send
 	#and receive data
 	def on_ready
-		@subs = {}
-
-		unless @@status
-			@@status = MusicGroup.new
-		end
-
-		@sid = @@status.subscribe do |msg|
+		@@channel = MusicGroup.new if @@channel.nil?
+		
+		@sid = @@channel.subscribe do |msg|
 			send_message msg
 		end
 		
@@ -56,12 +39,7 @@ class MusicHandler < Funnel::WebSocket::Connection
 	
 	#called on disconnect
 	def on_disconnect
-		@@status.unsubscribe(@sid)
-		
-		#@subs.each do |k,v|
-		#	MusicGroup.find(k).unsubscribe(v)
-		#end
-		
+		@@channel.unsubscribe(@sid)
 		log "disconnect"
 	end
 	

@@ -12,28 +12,33 @@ samples = []
 AMQP.start(:host => "192.168.0.2") do
   
   EM.set_quantum(10)
-  EM.kqueue
+  EM.kqueue if EM.kqueue?
+  EM.epoll if EM.epoll?
 
   mq = MQ.new
   
   monome = Monome.new
   sequencer = Sequencer.new(8, monome)
-  sequencer.samples = %w(
+  
+  #changed to work with 1.8
+  sequencer.samples = []
+  %w(
     techno-hat-1.mp3
     techno-ping.mp3
     techno-snare-1.mp3
     techno-snare-2.mp3
     techno-bass-1.mp3
-  ).collect.with_index do |sample, i|
-    { :id => i.to_s, :url => "media/samples/#{sample}" }
+  ).each_with_index do |sample, i|
+    sequencer.samples << { :id => i.to_s, :url => "media/samples/#{sample}" }
   end
   
   
   EM.add_periodic_timer(60.0 / BPM) do
     beat = sequencer.tick!
-    play_commands = monome.grid.col(beat).collect.with_index do |play, i|
-      i.to_s if play
-    end.compact
+    play_commands = []
+    monome.grid.col(beat).each_with_index do |play, i|
+      play_commands << i.to_s if play
+    end
     message = %({"action": "play", "items": #{play_commands.to_json}})
     puts message
     mq.topic("amalgamaton").publish(message, :key => "conductor")

@@ -25,11 +25,12 @@ var Amalgamaton = {
   },
   
   onConnect: function(e) {
-    document.getElementById("status").innerHTML = "Connected";
+    $("#status").html("Connected");
     this.send({action:"refresh"});
   },
   
   onMessage: function(e) {
+    console.log(e.data);
     var obj = JSON.parse(e.data);
     switch(obj.action) {
       case "activate":
@@ -59,16 +60,16 @@ var Amalgamaton = {
         this.addAll(obj.items);
       case "play":
         if(obj.items.constructor == Array) {
-          this.playAll(obj.items);
-        } else {
           this.play(obj.items);
+        } else {
+          this.play([obj.items]);
         }
         break;
       case "stop":
         if(obj.items.constructor == Array) {
-          this.stopAll(obj.items);
-        } else {
           this.stop(obj.items);
+        } else {
+          this.stop([obj.items]);
         }
         break;
       default:
@@ -77,9 +78,8 @@ var Amalgamaton = {
   },
   
   onDisconnect: function(e) {
-    document.getElementById("status").innerHTML = "Disconnected";
+    $("#status").html("Disconnected");
   },
-  
   
   onProxyReady: function() {
     this.proxy = document.getElementById("proxy");
@@ -122,24 +122,12 @@ var Amalgamaton = {
     }
   },
   
-  play: function(id) {
-    this.proxy.play(id);
+  play: function(ids) {
+    this.proxy.play(ids);
   },
   
-  playAll: function(samples) {
-    for(var i = 0;i < samples.length;i++) {
-      this.play(samples[i]);
-    }
-  },
-  
-  stop: function(id) {
-    this.proxy.stop(id);
-  },
-
-  stopAll: function(samples) {
-    for(var i = 0;i < samples.length;i++) {
-      this.stop(samples[i]);
-    }
+  stop: function(ids) {
+    this.proxy.stop(ids);
   },
   
   subscribe: function(family) {

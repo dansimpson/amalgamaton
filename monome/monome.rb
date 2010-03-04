@@ -1,4 +1,5 @@
 require 'monome_serial'
+require 'monome_dummy'
 require 'grid'
 
 class Monome
@@ -7,7 +8,12 @@ class Monome
   
   def initialize
     @grid = Grid.new
-    @monome = MonomeSerial.detect_monome
+    
+    begin
+      @monome = MonomeSerial.detect_monome
+    rescue
+      @monome = MonomeDummy.new
+    end
     @activate_blocks = []
     @deactivate_blocks = []
     @clear_blocks = []
